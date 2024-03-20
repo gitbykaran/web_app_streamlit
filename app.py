@@ -4,8 +4,6 @@ import base64
 import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
-import plotly.graph_objects as go
-
 
 st.title('NBA Player Stats Dashboard')
 st.image('shaquille_o_neal_nba_wallpaper_by_skythlee_d9rtlbk-pre.jpg')
@@ -26,7 +24,8 @@ def load_data(year):
       year) + "_per_game.html"
   html = pd.read_html(url, header=0)
   df = html[0]
-  raw = df.drop(df[df.Age == 'Age'].index)  # Deletes repeating headers in content
+  raw = df.drop(
+      df[df.Age == 'Age'].index)  # Deletes repeating headers in content
   raw = raw.fillna(0)
   playerstats = raw.drop(['Rk'], axis=1)
   return playerstats
@@ -59,5 +58,3 @@ def filedownload(df):
 st.table(df_selected_team.head(10))
 
 st.markdown(filedownload(df_selected_team), unsafe_allow_html=True)
-
-
