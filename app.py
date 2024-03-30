@@ -5,6 +5,12 @@ import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 
+st.set_page_config(
+    page_title="NBA Dashboard",
+    page_icon="🏀",
+    layout="centered",)
+
+
 st.title('NBA Player Stats Dashboard')
 st.image('shaquille_o_neal_nba_wallpaper_by_skythlee_d9rtlbk-pre.jpg')
 
@@ -20,15 +26,15 @@ selected_year = st.sidebar.selectbox('year', list(reversed(range(1950, 2020))))
 
 @st.cache_resource
 def load_data(year):
-  url = "https://www.basketball-reference.com/leagues/NBA_" + str(
-      year) + "_per_game.html"
-  html = pd.read_html(url, header=0)
-  df = html[0]
-  raw = df.drop(
-      df[df.Age == 'Age'].index)  # Deletes repeating headers in content
-  raw = raw.fillna(0)
-  playerstats = raw.drop(['Rk'], axis=1)
-  return playerstats
+    url = "https://www.basketball-reference.com/leagues/NBA_" + str(
+        year) + "_per_game.html"
+    html = pd.read_html(url, header=0)
+    df = html[0]
+    raw = df.drop(
+        df[df.Age == 'Age'].index)  # Deletes repeating headers in content
+    raw = raw.fillna(0)
+    playerstats = raw.drop(['Rk'], axis=1)
+    return playerstats
 
 
 playerstats = load_data(selected_year)
@@ -48,11 +54,11 @@ st.write('Data Dimensions : ' + str(df_selected_team.shape[0]) + ' rows and ' +
 
 
 def filedownload(df):
-  csv = df.to_csv(index=False)
-  b64 = base64.b64encode(
-      csv.encode()).decode()  # strings <-> bytes conversions
-  href = f'<a href="data:file/csv;base64,{b64}" download="playerstats.csv">Download CSV File</a>'
-  return href
+    csv = df.to_csv(index=False)
+    b64 = base64.b64encode(
+        csv.encode()).decode()  # strings <-> bytes conversions
+    href = f'<a href="data:file/csv;base64,{b64}" download="playerstats.csv">Download CSV File</a>'
+    return href
 
 
 st.table(df_selected_team.head(10))
